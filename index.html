@@ -3,53 +3,83 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meemu Atoll School</title>
+  <title>Meemu Atoll School | Excellence in Education</title>
+
+  <!-- FullCalendar -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
   <style>
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: "Segoe UI", Arial, sans-serif;
       margin: 0;
       background-color: #f7f9fc;
       color: #333;
+      transition: background-color 0.4s, color 0.4s;
     }
 
+    /* Header */
     header {
       background-color: #1e88e5;
       color: white;
       text-align: center;
-      padding: 1.5rem 0;
+      padding: 2rem 1rem;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      animation: fadeIn 1s ease;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
+    #darkModeToggle {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      background: white;
+      border: none;
+      border-radius: 50%;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 1rem;
     }
 
+    /* Navigation */
     nav {
       background-color: #1565c0;
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
     }
 
     nav a {
       color: white;
       text-decoration: none;
       padding: 1rem 1.5rem;
-      display: inline-block;
-      font-weight: 500;
+      transition: background 0.3s;
     }
 
-    nav a:hover {
+    nav a:hover, nav a.active {
       background-color: #0d47a1;
+      border-bottom: 3px solid white;
     }
 
+    /* Content */
     main {
       padding: 2rem;
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
     }
 
     section {
-      margin-bottom: 2.5rem;
+      margin-bottom: 3rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     h2 {
@@ -58,6 +88,55 @@
       padding-bottom: 0.3rem;
     }
 
+    /* Teacher Cards */
+    .teacher-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .teacher-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .teacher-card:hover { transform: translateY(-6px); }
+
+    .teacher-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #bbdefb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #1565c0;
+      margin: 0 auto 0.5rem;
+    }
+
+    /* Notice */
+    .notice {
+      background-color: #e3f2fd;
+      padding: 1rem;
+      border-left: 5px solid #1e88e5;
+      margin: 1rem 0;
+      border-radius: 6px;
+      animation: fadeIn 1s ease;
+    }
+
+    /* Calendar */
+    #calendar {
+      max-width: 100%;
+      margin-top: 1rem;
+    }
+
+    /* Footer */
     footer {
       background-color: #1565c0;
       color: white;
@@ -66,69 +145,85 @@
       font-size: 0.9rem;
     }
 
-    .notice {
-      background-color: #e3f2fd;
-      padding: 1rem;
-      border-left: 5px solid #1e88e5;
-      margin: 1rem 0;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+    /* Back to Top */
+    #backToTop {
+      display: none;
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background-color: #1e88e5;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
-    .notice strong {
-      color: #0d47a1;
-    }
+    #backToTop:hover { background-color: #0d47a1; }
 
-    @media (max-width: 600px) {
-      nav {
-        flex-direction: column;
-      }
-      nav a {
-        border-top: 1px solid rgba(255,255,255,0.2);
-      }
+    /* Dark Mode */
+    body.dark {
+      background-color: #121212;
+      color: #eee;
+    }
+    body.dark header, body.dark nav, body.dark footer {
+      background-color: #222;
+    }
+    body.dark a { color: #90caf9; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
+
   <header>
     <h1>Meemu Atoll School</h1>
     <p>🎯 AIM AT THE BEST 🚀</p>
+    <button id="darkModeToggle" title="Toggle Dark Mode">🌓</button>
   </header>
 
   <nav>
-    <a href="#about">About</a>
+    <a href="#home" class="active">Home</a>
     <a href="#teachers">Teachers</a>
-    <a href="#announcements">Announcements</a>
+    <a href="#students">Students</a>
+    <a href="#events">Events</a>
     <a href="#contact">Contact</a>
   </nav>
 
   <main>
-    <section id="about">
-      <h2>About Our School</h2>
-      <p>Meemu Atoll School is a community of passionate teachers and learners dedicated to achieving excellence in education. We focus on providing a supportive environment that encourages creativity, curiosity, and collaboration.</p>
-    </section>
-
-    <section id="teachers">
-      <h2>Our Teachers</h2>
-      <ul>
-        <li>Mr. Ahmed – Mathematics</li>
-        <li>Ms. Fathimath – English</li>
-        <li>Mr. Ismail – Science</li>
-        <li>Ms. Leena – History</li>
-      </ul>
-    </section>
-
-    <section id="announcements">
-      <h2>Announcements</h2>
+    <!-- HOME -->
+    <section id="home">
+      <h2>Welcome to Meemu Atoll School</h2>
+      <p>We are dedicated to nurturing curiosity, creativity, and excellence. Join our vibrant community where knowledge meets inspiration.</p>
       <div class="notice">
-        <span>📢</span>
-        <div>
-          <strong>Unit Test 2:</strong> Unit Test 2 will begin on November 6th. Make sure to review your notes and ask teachers for help if needed.
-        </div>
+        <b>📢 Science Fair:</b> The annual science fair will be held on <b>November 25th</b>. Registration closes November 15th!
       </div>
     </section>
 
+    <!-- TEACHERS (with icons instead of faces) -->
+    <section id="teachers">
+      <h2>Our Teachers</h2>
+      <div id="teacherGrid" class="teacher-grid"></div>
+    </section>
+
+    <!-- STUDENTS -->
+    <section id="students">
+      <h2>Student Achievements</h2>
+      <ul id="studentAchievements"></ul>
+    </section>
+
+    <!-- EVENTS -->
+    <section id="events">
+      <h2>Upcoming Events</h2>
+      <div id="calendar"></div>
+    </section>
+
+    <!-- CONTACT -->
     <section id="contact">
       <h2>Contact Us</h2>
       <p>Email: <a href="mailto:admin@matollschool.edu.mv">admin@matollschool.edu.mv</a></p>
@@ -138,7 +233,85 @@
   </main>
 
   <footer>
-    &copy; 2025 Meemu Atoll School | Designed for Teachers & Students
+    &copy; 2025 Meemu Atoll School | Designed with ✨ passion for learning
   </footer>
+
+  <button id="backToTop" title="Back to top">↑</button>
+
+  <script>
+    // Smooth scroll & section highlight
+    const navLinks = document.querySelectorAll("nav a");
+    window.addEventListener("scroll", () => {
+      const scrollPos = window.scrollY + 100;
+      navLinks.forEach(link => {
+        const section = document.querySelector(link.getAttribute("href"));
+        if (section.offsetTop <= scrollPos && section.offsetTop + section.offsetHeight > scrollPos) {
+          navLinks.forEach(l => l.classList.remove("active"));
+          link.classList.add("active");
+        }
+      });
+    });
+
+    // Reveal sections on scroll
+    const sections = document.querySelectorAll("section");
+    window.addEventListener("scroll", () => {
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) sec.classList.add("visible");
+      });
+    });
+
+    // Back to Top
+    const backToTop = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      backToTop.style.display = window.scrollY > 300 ? "block" : "none";
+    });
+    backToTop.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Dark mode
+    const toggle = document.getElementById("darkModeToggle");
+    toggle.addEventListener("click", () => document.body.classList.toggle("dark"));
+
+    // Dynamic Teachers (no faces, just icons)
+    const teacherGrid = document.getElementById("teacherGrid");
+    const teachers = [
+      { name: "Mr. Ahmed", subject: "Mathematics", icon: "📘" },
+      { name: "Ms. Fathimath", subject: "English", icon: "📖" },
+      { name: "Mr. Ismail", subject: "Science", icon: "🔬" },
+      { name: "Ms. Leena", subject: "History", icon: "🏛️" }
+    ];
+    teacherGrid.innerHTML = teachers.map(t => `
+      <div class="teacher-card">
+        <div class="teacher-icon">${t.icon}</div>
+        <h3>${t.name}</h3>
+        <p>${t.subject}</p>
+      </div>
+    `).join("");
+
+    // Dynamic Student Achievements
+    const studentAchievements = document.getElementById("studentAchievements");
+    const achievements = [
+      "Aishath won 1st place in the National Essay Competition 🏆",
+      "Hassan represented the school in the Science Olympiad 🧪",
+      "The school football team reached the interschool semifinals ⚽"
+    ];
+    studentAchievements.innerHTML = achievements.map(a => `<li>${a}</li>`).join("");
+
+    // Calendar
+    document.addEventListener("DOMContentLoaded", () => {
+      const calendarEl = document.getElementById("calendar");
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: "dayGridMonth",
+        height: "auto",
+        events: [
+          { title: "Unit Test 2", start: "2025-11-06" },
+          { title: "Science Fair", start: "2025-11-25" },
+          { title: "Sports Day", start: "2025-12-10" }
+        ]
+      });
+      calendar.render();
+    });
+  </script>
+
 </body>
 </html>
