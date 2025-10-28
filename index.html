@@ -1,384 +1,390 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meemu Atoll School | Excellence in Education</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meemu Atoll School</title>
 
-  <!-- FullCalendar -->
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<!-- FullCalendar -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
-  <style>
-    html { scroll-behavior: smooth; }
+<style>
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  background-color: #f7f9fc;
+  color: #333;
+  transition: background-color 0.4s, color 0.4s;
+}
 
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      margin: 0;
-      background-color: #f7f9fc;
-      color: #333;
-      transition: background-color 0.4s, color 0.4s;
-    }
+/* Header */
+header {
+  background-color: #1e88e5;
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  animation: fadeIn 1s ease;
+}
 
-    /* Header */
-    header {
-      background-color: #1e88e5;
-      color: white;
-      text-align: center;
-      padding: 2rem 1rem;
-      position: relative;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      animation: fadeIn 1s ease;
-    }
+#darkModeToggle {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 1rem;
+}
 
-    #darkModeToggle {
-      position: absolute;
-      right: 15px;
-      top: 10px;
-      background: white;
-      border: none;
-      border-radius: 50%;
-      padding: 8px 10px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s;
-    }
+/* Navigation */
+nav {
+  background-color: #1565c0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
-    #darkModeToggle:hover {
-      background: #ddd;
-    }
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 1rem 1.5rem;
+  transition: background 0.3s;
+}
 
-    /* Navigation */
-    nav {
-      background-color: #1565c0;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+nav a:hover, nav a.active {
+  background-color: #0d47a1;
+  border-bottom: 3px solid white;
+}
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      padding: 1rem 1.5rem;
-      transition: background 0.3s;
-    }
+/* Main content */
+main {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+}
 
-    nav a:hover, nav a.active {
-      background-color: #0d47a1;
-      border-bottom: 3px solid white;
-    }
+section {
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
 
-    /* Content */
-    main {
-      padding: 2rem;
-      max-width: 1000px;
-      margin: auto;
-      opacity: 0;
-      animation: fadeInPage 1.2s ease forwards;
-    }
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-    section {
-      margin-bottom: 3rem;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: sectionFade 1s ease forwards;
-    }
+h2 {
+  color: #1e88e5;
+  border-bottom: 2px solid #1e88e5;
+  padding-bottom: 0.3rem;
+}
 
-    section:nth-of-type(1) { animation-delay: 0.3s; }
-    section:nth-of-type(2) { animation-delay: 0.6s; }
-    section:nth-of-type(3) { animation-delay: 0.9s; }
-    section:nth-of-type(4) { animation-delay: 1.2s; }
-    section:nth-of-type(5) { animation-delay: 1.5s; }
+/* Teacher Cards */
+.teacher-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
 
-    h2 {
-      color: #1e88e5;
-      border-bottom: 2px solid #1e88e5;
-      padding-bottom: 0.3rem;
-    }
+.teacher-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
 
-    /* Teacher Cards */
-    .teacher-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1rem;
-    }
+.teacher-card:hover { transform: translateY(-6px); }
 
-    .teacher-card {
-      background: white;
-      border-radius: 10px;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: transform 0.3s, background 0.4s, color 0.4s;
-    }
+.teacher-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #bbdefb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #1565c0;
+  margin: 0 auto 0.5rem;
+}
 
-    .teacher-card:hover { transform: translateY(-6px); }
+/* Notice */
+.notice {
+  background-color: #e3f2fd;
+  padding: 1rem;
+  border-left: 5px solid #1e88e5;
+  margin: 1rem 0;
+  border-radius: 6px;
+  animation: fadeIn 1s ease;
+}
 
-    .teacher-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background-color: #bbdefb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      color: #1565c0;
-      margin: 0 auto 0.5rem;
-    }
+/* Quote of the Day */
+#quote {
+  font-style: italic;
+  text-align: center;
+  background-color: #fff3e0;
+  padding: 1rem;
+  border-left: 5px solid #ff9800;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+}
 
-    /* Notice */
-    .notice {
-      background-color: #e3f2fd;
-      padding: 1rem;
-      border-left: 5px solid #1e88e5;
-      margin: 1rem 0;
-      border-radius: 6px;
-      transition: background-color 0.4s, color 0.4s;
-    }
+/* Calendar */
+#calendar {
+  max-width: 100%;
+  margin-top: 1rem;
+  background: white;
+  border-radius: 10px;
+  padding: 1rem;
+}
 
-    /* Calendar */
-    #calendar {
-      max-width: 100%;
-      margin-top: 1rem;
-      background: white;
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: background 0.4s, color 0.4s;
-    }
+/* Footer */
+footer {
+  background-color: #1565c0;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+}
 
-    /* Footer */
-    footer {
-      background-color: #1565c0;
-      color: white;
-      text-align: center;
-      padding: 1rem 0;
-      font-size: 0.9rem;
-    }
+/* Back to Top */
+#backToTop {
+  display: none;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #1e88e5;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
 
-    /* Back to Top */
-    #backToTop {
-      display: none;
-      position: fixed;
-      bottom: 25px;
-      right: 25px;
-      background-color: #1e88e5;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 50%;
-      font-size: 18px;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
+#backToTop:hover { background-color: #0d47a1; }
 
-    #backToTop:hover { background-color: #0d47a1; }
+/* Dark Mode */
+body.dark {
+  background-color: #121212;
+  color: #eee;
+}
 
-    /* Dark Mode */
-    body.dark {
-      background-color: #121212;
-      color: #eee;
-    }
+body.dark header,
+body.dark nav,
+body.dark footer {
+  background-color: #222;
+}
 
-    body.dark header,
-    body.dark nav,
-    body.dark footer {
-      background-color: #1e1e1e;
-      color: #eee;
-    }
+body.dark .notice {
+  background-color: #333;
+  border-left-color: #90caf9;
+  color: #eee;
+}
 
-    body.dark nav a.active {
-      border-bottom: 3px solid #90caf9;
-    }
+body.dark #quote {
+  background-color: #1e1e1e;
+  border-left-color: #ffb74d;
+  color: #eee;
+}
 
-    body.dark .teacher-card {
-      background: #1f1f1f;
-      color: #eee;
-      box-shadow: 0 2px 8px rgba(255,255,255,0.1);
-    }
+body.dark .teacher-card {
+  background-color: #1e1e1e;
+  color: #eee;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+}
 
-    body.dark .teacher-icon {
-      background-color: #333;
-      color: #90caf9;
-    }
+body.dark #calendar {
+  background-color: #1e1e1e;
+  color: #eee;
+}
 
-    body.dark .notice {
-      background-color: #263238;
-      color: #e0e0e0;
-      border-left-color: #90caf9;
-    }
+body.dark #calendar .fc-toolbar,
+body.dark #calendar .fc-col-header,
+body.dark #calendar .fc-daygrid-event {
+  background-color: #333;
+  color: #eee;
+  border-color: #444;
+}
 
-    body.dark #calendar {
-      background-color: #1f1f1f;
-      color: #eee;
-    }
+body.dark a {
+  color: #90caf9;
+}
 
-    body.dark .fc-theme-standard .fc-scrollgrid,
-    body.dark .fc-col-header-cell,
-    body.dark .fc-daygrid-day {
-      background-color: #1f1f1f !important;
-      border-color: #333 !important;
-      color: #eee !important;
-    }
-
-    body.dark .fc-daygrid-event {
-      background-color: #1976d2 !important;
-      border: none !important;
-      color: #fff !important;
-    }
-
-    body.dark h2 {
-      color: #90caf9;
-      border-bottom-color: #90caf9;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInPage {
-      to { opacity: 1; }
-    }
-
-    @keyframes sectionFade {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>Meemu Atoll School</h1>
-    <p>🎯 AIM AT THE BEST 🚀</p>
-    <button id="darkModeToggle" title="Toggle Dark Mode">🌓</button>
-  </header>
+<header>
+  <h1>Meemu Atoll School</h1>
+  <p>🎯 AIM AT THE BEST 🚀</p>
+  <button id="darkModeToggle" title="Toggle Dark Mode">🌓</button>
+</header>
 
-  <nav>
-    <a href="#home" class="active">Home</a>
-    <a href="#teachers">Teachers</a>
-    <a href="#students">Students</a>
-    <a href="#events">Events</a>
-    <a href="#contact">Contact</a>
-  </nav>
+<nav>
+  <a href="#home" class="active">Home</a>
+  <a href="#about">About</a>
+  <a href="#teachers">Teachers</a>
+  <a href="#students">Students</a>
+  <a href="#upcoming">Upcoming</a>
+  <a href="#contact">Contact</a>
+</nav>
 
-  <main>
-    <!-- HOME -->
-    <section id="home">
-      <h2>Welcome to Meemu Atoll School</h2>
-      <p>We are dedicated to nurturing curiosity, creativity, and excellence. Join our vibrant community where knowledge meets inspiration.</p>
-      <div class="notice">
-        <b>📢 Science Fair:</b> The annual science fair will be held on <b>November 1st</b>. Registration closes <b>November 15th!</b>
-      </div>
-    </section>
+<main>
+  <!-- HOME -->
+  <section id="home">
+    <h2>Welcome to Meemu Atoll School</h2>
+    <p>We are dedicated to nurturing curiosity, creativity, and excellence. Join our vibrant community where knowledge meets inspiration.</p>
+    <div id="quote"></div>
+    <div class="notice">
+      <b>📢 Science Fair:</b> The annual science fair will be held on <b>November 1st</b>. Registration closes October 25th!
+    </div>
+  </section>
 
-    <!-- TEACHERS -->
-    <section id="teachers">
-      <h2>Our Teachers</h2>
-      <div id="teacherGrid" class="teacher-grid"></div>
-    </section>
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About Us</h2>
+    <p>Meemu Atoll School has been a beacon of excellence in education for decades. Our mission is to foster a safe, inclusive, and stimulating environment where every student can explore their potential. With a focus on academic rigor, creative expression, and social responsibility, our school nurtures future leaders and innovators. We take pride in our dedicated teachers, vibrant extracurricular programs, and a supportive community that values learning as a lifelong journey.</p>
+  </section>
 
-    <!-- STUDENTS -->
-    <section id="students">
-      <h2>Student Achievements</h2>
-      <ul id="studentAchievements"></ul>
-    </section>
+  <!-- TEACHERS -->
+  <section id="teachers">
+    <h2>Our Teachers</h2>
+    <div id="teacherGrid" class="teacher-grid"></div>
+  </section>
 
-    <!-- EVENTS -->
-    <section id="events">
-      <h2>Upcoming Events</h2>
-      <div id="calendar"></div>
-    </section>
+  <!-- STUDENTS -->
+  <section id="students">
+    <h2>Student Achievements</h2>
+    <ul id="studentAchievements"></ul>
+  </section>
 
-    <!-- CONTACT -->
-    <section id="contact">
-      <h2>Contact Us</h2>
-      <p>Email: <a href="mailto:admin@matollschool.edu.mv">admin@matollschool.edu.mv</a></p>
-      <p>Phone: +960 7952902</p>
-      <p>Address: M. Atoll School, Ameenee Magu, M. Kolhufushi, Maldives</p>
-    </section>
-  </main>
+  <!-- UPCOMING -->
+  <section id="upcoming">
+    <h2>Upcoming Events</h2>
+    <div id="calendar"></div>
+  </section>
 
-  <footer>
-    &copy; 2025 Meemu Atoll School | Designed with ✨ passion for learning
-  </footer>
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p>Email: <a href="mailto:admin@matollschool.edu.mv">admin@matollschool.edu.mv</a></p>
+    <p>Phone: +960 7952902</p>
+    <p>Address: M. Atoll School, Ameenee Magu, M. Kolhufushi, Maldives</p>
+  </section>
+</main>
 
-  <button id="backToTop" title="Back to top">↑</button>
+<footer>
+  &copy; 2025 Meemu Atoll School | Designed with ✨ passion for learning
+</footer>
 
-  <script>
-    // Smooth scroll & section highlight
-    const navLinks = document.querySelectorAll("nav a");
-    window.addEventListener("scroll", () => {
-      const scrollPos = window.scrollY + 100;
-      navLinks.forEach(link => {
-        const section = document.querySelector(link.getAttribute("href"));
-        if (section.offsetTop <= scrollPos && section.offsetTop + section.offsetHeight > scrollPos) {
-          navLinks.forEach(l => l.classList.remove("active"));
-          link.classList.add("active");
-        }
-      });
-    });
+<button id="backToTop" title="Back to top">↑</button>
 
-    // Back to Top
-    const backToTop = document.getElementById("backToTop");
-    window.addEventListener("scroll", () => {
-      backToTop.style.display = window.scrollY > 300 ? "block" : "none";
-    });
-    backToTop.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+<script>
+// Navigation scroll & highlight
+const navLinks = document.querySelectorAll("nav a");
+const sections = document.querySelectorAll("section");
 
-    // Dark mode toggle (with saved preference)
-    const toggle = document.getElementById("darkModeToggle");
-    const isDark = localStorage.getItem("darkMode") === "true";
-    if (isDark) document.body.classList.add("dark");
+window.addEventListener("scroll", () => {
+  const scrollPos = window.scrollY + 100;
+  navLinks.forEach(link => {
+    const section = document.querySelector(link.getAttribute("href"));
+    if (section.offsetTop <= scrollPos && section.offsetTop + section.offsetHeight > scrollPos) {
+      navLinks.forEach(l => l.classList.remove("active"));
+      link.classList.add("active");
+    }
+  });
+  sections.forEach(sec => {
+    const rect = sec.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 100) sec.classList.add("visible");
+  });
 
-    toggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      localStorage.setItem("darkMode", document.body.classList.contains("dark"));
-    });
+  backToTop.style.display = window.scrollY > 300 ? "block" : "none";
+});
 
-    // Dynamic Teachers
-    const teacherGrid = document.getElementById("teacherGrid");
-    const teachers = [
-      { name: "Mr. Ahmed", subject: "Mathematics", icon: "📘" },
-      { name: "Ms. Fathimath", subject: "English", icon: "📖" },
-      { name: "Mr. Ismail", subject: "Science", icon: "🔬" },
-      { name: "Ms. Leena", subject: "History", icon: "🏛️" }
-    ];
-    teacherGrid.innerHTML = teachers.map(t => `
-      <div class="teacher-card">
-        <div class="teacher-icon">${t.icon}</div>
-        <h3>${t.name}</h3>
-        <p>${t.subject}</p>
-      </div>
-    `).join("");
+// Back to top
+const backToTop = document.getElementById("backToTop");
+backToTop.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-    // Dynamic Student Achievements
-    const studentAchievements = document.getElementById("studentAchievements");
-    const achievements = [
-      "Aishath won 1st place in the National Essay Competition 🏆",
-      "Hassan represented the school in the Science Olympiad 🧪",
-      "The school football team reached the interschool semifinals ⚽"
-    ];
-    studentAchievements.innerHTML = achievements.map(a => `<li>${a}</li>`).join("");
+// Dark mode with auto-detect & persistence
+const toggle = document.getElementById("darkModeToggle");
+if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) document.body.classList.add("dark");
+if(localStorage.getItem("darkMode") === "true") document.body.classList.add("dark");
 
-    // Calendar
-    document.addEventListener("DOMContentLoaded", () => {
-      const calendarEl = document.getElementById("calendar");
-      const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: "dayGridMonth",
-        height: "auto",
-        events: [
-          { title: "Unit Test 2", start: "2025-11-06" },
-          { title: "Science Fair", start: "2025-11-01" },
-          { title: "Sports Day", start: "2025-12-10" }
-        ]
-      });
-      calendar.render();
-    });
-  </script>
+toggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+});
+
+// Teacher cards
+const teacherGrid = document.getElementById("teacherGrid");
+const teachers = [
+  { name: "Mr. Ahmed", subject: "Mathematics", icon: "📘" },
+  { name: "Ms. Fathimath", subject: "English", icon: "📖" },
+  { name: "Mr. Ismail", subject: "Science", icon: "🔬" },
+  { name: "Ms. Leena", subject: "History", icon: "🏛️" }
+];
+teacherGrid.innerHTML = teachers.map(t => `
+  <div class="teacher-card">
+    <div class="teacher-icon">${t.icon}</div>
+    <h3>${t.name}</h3>
+    <p>${t.subject}</p>
+  </div>
+`).join("");
+
+// Student achievements
+const studentAchievements = document.getElementById("studentAchievements");
+const achievements = [
+  "Aishath won 1st place in the National Essay Competition 🏆",
+  "Hassan represented the school in the Science Olympiad 🧪",
+  "The school football team reached the interschool semifinals ⚽"
+];
+studentAchievements.innerHTML = achievements.map(a => `<li>${a}</li>`).join("");
+
+// Quote of the Day
+const quotes = [
+  "Education is the most powerful weapon which you can use to change the world. – Nelson Mandela",
+  "The beautiful thing about learning is that no one can take it away from you. – B.B. King",
+  "Learning never exhausts the mind. – Leonardo da Vinci",
+  "The mind is not a vessel to be filled but a fire to be ignited. – Plutarch",
+  "An investment in knowledge pays the best interest. – Benjamin Franklin",
+  "Develop a passion for learning. If you do, you will never cease to grow. – Anthony J. D’Angelo",
+  "Education is not preparation for life; education is life itself. – John Dewey"
+];
+const quoteEl = document.getElementById("quote");
+const dayIndex = new Date().getDate() % quotes.length;
+quoteEl.innerHTML = `<b>Quote of the Day:</b> "${quotes[dayIndex]}"`;
+
+// Calendar
+const calendarEl = document.getElementById("calendar");
+const calendar = new FullCalendar.Calendar(calendarEl, {
+  initialView: "dayGridMonth",
+  height: "auto",
+  events: [
+    { title: "Unit Test 2", start: "2025-11-06" },
+    { title: "Science Fair", start: "2025-11-01" },
+    { title: "Sports Day", start: "2025-12-10" }
+  ]
+});
+calendar.render();
+</script>
 
 </body>
 </html>
+
