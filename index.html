@@ -10,119 +10,123 @@
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
   <style>
+    :root {
+      --primary: #1e88e5;
+      --primary-dark: #0d47a1;
+      --light-bg: #f7f9fc;
+      --dark-bg: #121212;
+      --text-light: #fff;
+      --text-dark: #333;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     html { scroll-behavior: smooth; }
 
     body {
       font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--light-bg);
+      color: var(--text-dark);
       margin: 0;
-      background-color: #f7f9fc;
-      color: #333;
-      transition: background-color 0.4s, color 0.4s;
+      transition: background 0.3s, color 0.3s;
     }
 
-    /* Header */
     header {
-      background-color: #1e88e5;
+      background: var(--primary);
       color: white;
       text-align: center;
       padding: 2rem 1rem;
       position: relative;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      animation: fadeIn 1s ease;
     }
 
     #darkModeToggle {
       position: absolute;
       right: 15px;
-      top: 10px;
+      top: 15px;
       background: white;
       border: none;
       border-radius: 50%;
       padding: 8px 10px;
       cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s;
+      font-size: 1.1rem;
     }
 
-    #darkModeToggle:hover {
-      background: #ddd;
-    }
-
-    /* Navigation Bar */
+    /* NAVIGATION */
     nav {
-      background-color: #1565c0;
+      background-color: var(--primary-dark);
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      transition: all 0.3s;
+      padding: 0.5rem;
     }
 
     nav a {
       color: white;
       text-decoration: none;
-      padding: 1rem 1.5rem;
-      transition: background 0.3s;
+      padding: 0.8rem 1rem;
+      display: block;
     }
 
     nav a:hover, nav a.active {
-      background-color: #0d47a1;
-      border-bottom: 3px solid white;
+      background-color: var(--primary);
+      border-radius: 5px;
     }
 
-    /* Floating Nav Button */
-    #navButton {
-      position: fixed;
-      bottom: 90px;
-      right: 25px;
-      background-color: #1e88e5;
+    /* MOBILE MENU */
+    #menuToggle {
+      display: none;
+      background: var(--primary);
       color: white;
       border: none;
-      border-radius: 50%;
-      font-size: 20px;
-      padding: 12px 15px;
+      font-size: 1.5rem;
+      border-radius: 5px;
+      padding: 0.5rem 0.8rem;
+      position: absolute;
+      left: 15px;
+      top: 15px;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      z-index: 1000;
-    }
-    #navButton:hover { background-color: #0d47a1; }
-
-    /* Content */
-    main {
-      padding: 2rem;
-      max-width: 1000px;
-      margin: auto;
     }
 
-    section {
-      margin-bottom: 3rem;
-      opacity: 1;
-      transform: none;
+    @media (max-width: 768px) {
+      nav { display: none; flex-direction: column; text-align: center; }
+      nav.active { display: flex; }
+      #menuToggle { display: block; }
     }
+
+    main { padding: 1.5rem; max-width: 1000px; margin: auto; }
+    section { margin-bottom: 3rem; }
 
     h2 {
-      color: #1e88e5;
-      border-bottom: 2px solid #1e88e5;
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
       padding-bottom: 0.3rem;
+      margin-bottom: 1rem;
     }
 
-    /* Quote of the Day */
+    .notice {
+      background: #e3f2fd;
+      padding: 1rem;
+      border-left: 5px solid var(--primary);
+      border-radius: 6px;
+      margin-top: 1rem;
+    }
+
     .quote {
       font-style: italic;
-      background-color: #fff;
-      border-left: 4px solid #1e88e5;
+      background-color: white;
+      border-left: 4px solid var(--primary);
       padding: 1rem;
-      margin: 1.5rem 0;
       border-radius: 6px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      transition: background 0.4s, color 0.4s;
+      margin: 1.5rem 0;
     }
 
-    /* Teacher Cards */
+    /* TEACHERS */
     .teacher-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
     }
 
     .teacher-card {
@@ -131,132 +135,68 @@
       padding: 1rem;
       text-align: center;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: transform 0.3s, background 0.4s, color 0.4s;
+      transition: transform 0.3s;
     }
 
-    .teacher-card:hover { transform: translateY(-6px); }
+    .teacher-card:hover { transform: translateY(-5px); }
 
     .teacher-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background-color: #bbdefb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       font-size: 2rem;
-      color: #1565c0;
-      margin: 0 auto 0.5rem;
-      transition: background 0.4s, color 0.4s;
-    }
-
-    /* Notice */
-    .notice {
-      background-color: #e3f2fd;
-      padding: 1rem;
-      border-left: 5px solid #1e88e5;
-      margin: 1rem 0;
-      border-radius: 6px;
-      animation: fadeIn 1s ease;
-      transition: background 0.4s, color 0.4s;
+      margin-bottom: 0.5rem;
     }
 
     /* Calendar */
     #calendar {
-      max-width: 100%;
-      margin-top: 1rem;
       background: white;
       border-radius: 8px;
-      padding: 10px;
-      transition: background 0.4s, color 0.4s;
+      padding: 1rem;
     }
 
     /* Footer */
     footer {
-      background-color: #1565c0;
+      background: var(--primary-dark);
       color: white;
       text-align: center;
       padding: 1rem 0;
-      font-size: 0.9rem;
-      transition: background 0.4s, color 0.4s;
     }
 
-    /* Back to Top */
+    /* Back to top */
     #backToTop {
       display: none;
       position: fixed;
       bottom: 25px;
       right: 25px;
-      background-color: #1e88e5;
+      background: var(--primary);
       color: white;
       border: none;
-      padding: 10px 15px;
       border-radius: 50%;
-      font-size: 18px;
+      font-size: 1.5rem;
+      padding: 10px 15px;
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      z-index: 1000;
     }
 
-    #backToTop:hover { background-color: #0d47a1; }
+    /* DARK MODE */
+    body.dark { background: var(--dark-bg); color: #eee; }
+    body.dark header, body.dark nav, body.dark footer { background: #222; }
 
-    /* Dark Mode */
-    body.dark {
-      background-color: #121212;
-      color: #eee;
-    }
-    body.dark header { background-color: #222; color: #fff; }
-    body.dark nav { background-color: #333; }
-    body.dark nav a { color: #eee; }
-    body.dark nav a:hover, body.dark nav a.active {
-      background-color: #555;
-      border-bottom: 3px solid #90caf9;
-    }
-    body.dark footer { background-color: #222; color: #ccc; }
-    body.dark .teacher-card {
+    body.dark .teacher-card, body.dark #calendar, body.dark .notice, body.dark .quote {
       background: #1e1e1e;
       color: #ddd;
       box-shadow: 0 2px 8px rgba(255,255,255,0.1);
     }
-    body.dark .teacher-icon {
-      background-color: #333;
-      color: #90caf9;
-    }
-    body.dark .notice {
-      background-color: #1e1e1e;
-      color: #ddd;
-      border-left: 5px solid #90caf9;
-    }
-    body.dark #calendar {
-      background: #1e1e1e;
-      color: #ddd;
-    }
-    body.dark h2 {
-      color: #90caf9;
-      border-bottom: 2px solid #90caf9;
-    }
-    body.dark #darkModeToggle {
-      background: #333;
-      color: #fff;
-    }
-    body.dark .quote {
-      background-color: #1e1e1e;
-      color: #ccc;
-      border-left: 4px solid #90caf9;
-    }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    body.dark h2 { color: #90caf9; border-bottom: 2px solid #90caf9; }
   </style>
 </head>
+
 <body>
 
   <header>
+    <button id="menuToggle">☰</button>
     <h1>Meemu Atoll School</h1>
     <p>🎯 AIM AT THE BEST 🚀</p>
-    <button id="darkModeToggle" title="Toggle Dark Mode">🌓</button>
+    <button id="darkModeToggle">🌓</button>
   </header>
 
   <nav id="mainNav">
@@ -273,9 +213,7 @@
       <h2>Welcome to Meemu Atoll School</h2>
       <p>We are dedicated to nurturing curiosity, creativity, and excellence. Join our vibrant community where knowledge meets inspiration.</p>
 
-      <div class="quote" id="quoteOfDay">
-        🌟 <i>"Education is the most powerful weapon which you can use to change the world."</i> — Nelson Mandela
-      </div>
+      <div class="quote">🌟 <i>"Education is the most powerful weapon which you can use to change the world."</i> — Nelson Mandela</div>
 
       <div class="notice">
         <b>📢 Science Fair:</b> The annual science fair will be held on <b>November 1st</b>. Registration closes <b>October 16th!</b>
@@ -314,71 +252,60 @@
   </footer>
 
   <button id="backToTop" title="Back to top">↑</button>
-  <button id="navButton" title="Open Menu">☰</button>
 
   <script>
-    // Highlight active nav link
-    const navLinks = document.querySelectorAll("nav a");
-    window.addEventListener("scroll", () => {
-      const scrollPos = window.scrollY + 100;
-      navLinks.forEach(link => {
-        const section = document.querySelector(link.getAttribute("href"));
-        if (section.offsetTop <= scrollPos && section.offsetTop + section.offsetHeight > scrollPos) {
-          navLinks.forEach(l => l.classList.remove("active"));
-          link.classList.add("active");
-        }
-      });
-    });
+    // Mobile nav toggle
+    const menuToggle = document.getElementById("menuToggle");
+    const nav = document.getElementById("mainNav");
+    menuToggle.onclick = () => nav.classList.toggle("active");
 
-    // Back to Top button
+    // Dark mode toggle (persistent)
+    const toggle = document.getElementById("darkModeToggle");
+    if (localStorage.getItem("darkMode") === "true") document.body.classList.add("dark");
+    toggle.onclick = () => {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+    };
+
+    // Back to top button
     const backToTop = document.getElementById("backToTop");
     window.addEventListener("scroll", () => {
       backToTop.style.display = window.scrollY > 300 ? "block" : "none";
     });
     backToTop.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-    // Floating Nav button toggle
-    const navButton = document.getElementById("navButton");
-    const nav = document.getElementById("mainNav");
-    navButton.addEventListener("click", () => {
-      nav.style.display = (nav.style.display === "flex" || nav.style.display === "") ? "none" : "flex";
-    });
-
-    // Dark mode toggle (persistent)
-    const toggle = document.getElementById("darkModeToggle");
-    const isDark = localStorage.getItem("darkMode") === "true";
-    if (isDark) document.body.classList.add("dark");
-
-    toggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      localStorage.setItem("darkMode", document.body.classList.contains("dark"));
-    });
-
-    // Teacher data (All current + new)
+    // Teachers: Principal → Leading Teachers → Others
     const teacherGrid = document.getElementById("teacherGrid");
     const teachers = [
-      { name: "Mohamed Faarooq", subject: "Islam Teacher", icon: "☪️" },
-      { name: "Ali Naeem", subject: "Principal", icon: "🎓" },
-      { name: "Lemi T Augustine", subject: "Chemistry Teacher", icon: "⚗️" },
-      { name: "Suhail TC", subject: "Economics Teacher", icon: "💰" },
-      { name: "Ibrahim Naseer", subject: "Dhivehi Teacher", icon: "📜" },
-      { name: "Reshmi Nair", subject: "Biology Teacher", icon: "🧬" },
+      { name: "Ali Naeem", subject: "Principal / Business Teacher", icon: "🏫" },
       { name: "Ahmed Riyaz", subject: "Leading Teacher / Quran Teacher", icon: "📖" },
-      { name: "Aminath Wadheea", subject: "Quran Teacher", icon: "🕌" },
-      { name: "Mausoomaa Adam", subject: "English Teacher", icon: "📘" },
+      { name: "Fathimath Faakhira", subject: "Leading Teacher / Maths Teacher", icon: "📐" },
+      { name: "Mariyam Raihana", subject: "Leading Teacher", icon: "🎓" },
+      { name: "Mariyam Zareera", subject: "Leading Teacher / Social Studies", icon: "🏛️" },
+      { name: "Ali Saleem", subject: "Maths Teacher", icon: "📊" },
+      { name: "Alim Abdul Gadhir", subject: "Arabic Teacher", icon: "📖" },
+      { name: "Aminath Dhimna", subject: "Social Studies Teacher", icon: "🌍" },
       { name: "Aminath Mausoomaa", subject: "Dhivehi Teacher", icon: "📜" },
-      { name: "Ismail Khalid", subject: "Dhivehi Teacher", icon: "📜" },
-      { name: "Shuab Abdulla", subject: "Health and PE Teacher", icon: "🏃‍♂️" },
       { name: "Aminath Raufa", subject: "English Teacher", icon: "📖" },
-      { name: "Numan Wisham", subject: "Accounting Teacher", icon: "💹" },
-      { name: "Ali Saleem", subject: "Maths Teacher", icon: "➗" },
+      { name: "Aminath Wadheea", subject: "Quran Teacher", icon: "🕌" },
       { name: "Aniyath Afeefa", subject: "Science Teacher", icon: "🔬" },
-      { name: "Nuhman Mecheri", subject: "Arabi and Creative Arts Teacher", icon: "🎨" },
-      { name: "Mariyam Zareera", subject: "Leading Teacher / Social Studies Teacher", icon: "🌍" },
-      // Newly Added Teachers
-      { name: "Byju Vattathara", subject: "Business Studies Teacher", icon: "💼" },
-      { name: "Archana", subject: "BTEC Teacher", icon: "🧩" },
-      { name: "Aminath Dhimna", subject: "Social Studies Teacher", icon: "🏛️" }
+      { name: "Archana", subject: "BTEC Teacher", icon: "💼" },
+      { name: "Byju Vattathara", subject: "Business Studies Teacher", icon: "📈" },
+      { name: "Fathimath Rimna", subject: "Grade 2 Class Teacher", icon: "📚" },
+      { name: "Fathimath Rizama", subject: "Islam Teacher", icon: "☪️" },
+      { name: "Fathimath Shazna", subject: "Grade 3 Class Teacher", icon: "✏️" },
+      { name: "Ibrahim Naseer", subject: "Dhivehi Teacher", icon: "📜" },
+      { name: "Ismail Khalid", subject: "Dhivehi Teacher", icon: "📜" },
+      { name: "Juwairiya Abdul Shakoor", subject: "Grade 1 Class Teacher", icon: "🍎" },
+      { name: "Lemi T Augustine", subject: "Chemistry Teacher", icon: "⚗️" },
+      { name: "Mausoomaa Adam", subject: "English Teacher", icon: "📘" },
+      { name: "Mohamed Faarooq", subject: "Islam Teacher", icon: "☪️" },
+      { name: "Nuhman Mecheri", subject: "English & Creative Arts Teacher", icon: "🎨" },
+      { name: "Numan Wisham", subject: "Accounting Teacher", icon: "💰" },
+      { name: "Reshmi Nair", subject: "Biology Teacher", icon: "🧬" },
+      { name: "Shuaib Abdulla", subject: "Health & PE Teacher", icon: "🏃‍♂️" },
+      { name: "Shuaib Parambill", subject: "Physics Teacher", icon: "🧲" },
+      { name: "Suhail TC", subject: "Economics Teacher", icon: "💼" }
     ];
 
     teacherGrid.innerHTML = teachers.map(t => `
@@ -392,8 +319,6 @@
     // Student Achievements
     const studentAchievements = document.getElementById("studentAchievements");
     const achievements = [
-      "Aishath won 1st place in the National Essay Competition 🏆",
-      "Hassan represented the school in the Science Olympiad 🧪",
       "Ameen house futsal and volleyball team won the interhouse tournament ⚽"
     ];
     studentAchievements.innerHTML = achievements.map(a => `<li>${a}</li>`).join("");
@@ -415,4 +340,6 @@
   </script>
 </body>
 </html>
+
+
 
