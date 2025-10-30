@@ -89,12 +89,21 @@
     }
 
     @media (max-width: 768px) {
-      nav { display: none; flex-direction: column; text-align: center; }
-      nav.active { display: flex; }
-      #menuToggle { display: block; }
+      nav {
+        display: none;
+        flex-direction: column;
+        text-align: center;
+      }
+      nav.active {
+        display: flex;
+      }
+      #menuToggle {
+        display: block;
+      }
     }
 
     main { padding: 1.5rem; max-width: 1000px; margin: auto; }
+
     section { margin-bottom: 3rem; }
 
     h2 {
@@ -125,8 +134,16 @@
     /* TEACHERS */
     .teacher-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    @media (max-width: 600px) {
+      .teacher-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 400px) {
+      .teacher-grid { grid-template-columns: 1fr; }
     }
 
     .teacher-card {
@@ -140,25 +157,13 @@
 
     .teacher-card:hover { transform: translateY(-5px); }
 
-    .teacher-icon {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
+    .teacher-icon { font-size: 2rem; margin-bottom: 0.5rem; }
 
     /* Calendar */
-    #calendar {
-      background: white;
-      border-radius: 8px;
-      padding: 1rem;
-    }
+    #calendar { background: white; border-radius: 8px; padding: 1rem; }
 
     /* Footer */
-    footer {
-      background: var(--primary-dark);
-      color: white;
-      text-align: center;
-      padding: 1rem 0;
-    }
+    footer { background: var(--primary-dark); color: white; text-align: center; padding: 1rem 0; }
 
     /* Back to top */
     #backToTop {
@@ -177,10 +182,17 @@
     }
 
     /* DARK MODE */
-    body.dark { background: var(--dark-bg); color: #eee; }
+    body.dark {
+      background: var(--dark-bg);
+      color: #eee;
+    }
+
     body.dark header, body.dark nav, body.dark footer { background: #222; }
 
-    body.dark .teacher-card, body.dark #calendar, body.dark .notice, body.dark .quote {
+    body.dark .teacher-card, 
+    body.dark #calendar, 
+    body.dark .notice, 
+    body.dark .quote {
       background: #1e1e1e;
       color: #ddd;
       box-shadow: 0 2px 8px rgba(255,255,255,0.1);
@@ -189,7 +201,6 @@
     body.dark h2 { color: #90caf9; border-bottom: 2px solid #90caf9; }
   </style>
 </head>
-
 <body>
 
   <header>
@@ -274,10 +285,10 @@
     });
     backToTop.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-    // Teachers: Principal → Leading Teachers → Others
+    // Teachers (Principal → Leading → others)
     const teacherGrid = document.getElementById("teacherGrid");
     const teachers = [
-      { name: "Ali Naeem", subject: "Principal / Business Teacher", icon: "🏫" },
+      { name: "Ali Naeem", subject: "Principal/Business teacher", icon: "🏫" },
       { name: "Ahmed Riyaz", subject: "Leading Teacher / Quran Teacher", icon: "📖" },
       { name: "Fathimath Faakhira", subject: "Leading Teacher / Maths Teacher", icon: "📐" },
       { name: "Mariyam Raihana", subject: "Leading Teacher", icon: "🎓" },
@@ -340,6 +351,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
